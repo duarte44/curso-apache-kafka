@@ -1,8 +1,7 @@
-package com.allan.strproducer.config;
+package com.allan.paymentservice.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,22 +14,20 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class KafkaAdminConfig {
 
-    @Autowired
-    public final KafkaProperties properties;
-
-
+    private final KafkaProperties properties;
 
     @Bean
     public KafkaAdmin kafkaAdmin(){
         var configs = new HashMap<String, Object>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, properties.getBootstrapServers() );
-        return  new KafkaAdmin(configs);
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, properties.getBootstrapServers());
+        return new KafkaAdmin(configs);
     }
 
     @Bean
-    public KafkaAdmin.NewTopics topics(){
+    public KafkaAdmin.NewTopics newTopics(){
         return new KafkaAdmin.NewTopics(
                 TopicBuilder.name("payment-topic").partitions(1).build()
         );
+
     }
 }
